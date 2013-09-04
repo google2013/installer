@@ -18,7 +18,7 @@ class Installer extends LibraryInstaller
      */
     public function getInstallPath(PackageInterface $package)
     {
-        $packageType = $this->package->getType();
+        $packageType = $package->getType();
 
         if (!isset($this->locations[$packageType]))
         {
