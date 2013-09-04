@@ -9,9 +9,9 @@ class Installer extends LibraryInstaller
 {
     protected $locations = array
     (
-        'myqee-core'    => 'core/',
-        'myqee-library' => 'libraries/{$vendor}/{$name}/',
-        'myqee-project' => 'projects/{$name}/',
+        'myqee-core'    => 'core',
+        'myqee-library' => 'libraries/{$vendor}/{$name}',
+        'myqee-project' => 'projects/{$name}',
     );
 
     /**
