@@ -60,15 +60,4 @@ class Installer extends LibraryInstaller
     {
         return $vars;
     }
-
-    /**
-     * For an installer to override to modify the vars per installer.
-     *
-     * @param  array $vars
-     * @return array
-     */
-    public function inflectPackageVars($vars)
-    {
-        return $vars;
-    }
 }
