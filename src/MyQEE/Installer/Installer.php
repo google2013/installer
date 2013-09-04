@@ -10,7 +10,7 @@ class Installer extends LibraryInstaller
     protected $locations = array
     (
         'myqee-core'    => 'core/',
-        'myqee-library' => 'libraries/{$vendor}/{$name}/',
+        'myqee-library' => 'libraries/{$name}/',
     );
 
     /**
@@ -25,21 +25,7 @@ class Installer extends LibraryInstaller
             throw new \InvalidArgumentException(sprintf('Package type "%s" is not supported', $packageType));
         }
 
-        $availableVars = $this->inflectPackageVars(compact('name', 'vendor', 'type'));
-
-        $extra = $package->getExtra();
-        if (!empty($extra['installer-name']))
-        {
-            $availableVars['name'] = $extra['installer-name'];
-        }
-
-        $path = $this->locations[$packageType];
-        foreach (array('name', 'vendor', 'type') as $item)
-        {
-            $path = str_replace('{$'.$item.'}', $availableVars[$item], $page);
-        }
-
-        return $path;
+        return str_replace('{$name}', strtolower($package->getName()), $this->locations[$packageType]);
     }
 
     /**
