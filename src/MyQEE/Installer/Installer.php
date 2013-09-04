@@ -37,7 +37,8 @@ class Installer extends LibraryInstaller
             throw new \InvalidArgumentException(sprintf('Package name "%s" is not supported', $name));
         }
 
-        return realpath(str_replace(array('{$vendor}', '{$name}'), array($vendor, $name), $this->locations[$packageType]));
+
+        return realpath('./') . '/' . str_replace(array('{$vendor}', '{$name}'), array($vendor, $name), $this->locations[$packageType]);
     }
 
     /**
