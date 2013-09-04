@@ -1,0 +1,25 @@
+{
+  "name": "myqee/installer",
+  "description": "MyQEE Installer for Composer",
+  "keywords": ["MyQEE", "Installer"],
+  "homepage": "http://www.myqee.com/",
+  "type": "composer-installer",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "jonwang",
+      "email": "jonwang@queyang.com",
+      "homepage": "http://www.queyang.com/"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0",
+    "composer/installers": "~1.0"
+  },
+  "extra": {
+    "class": "MyQEE\\Installer\\Installer"
+  },
+  "autoload": {
+    "psr-0": {"MyQEE\\Installer": "src/"}
+  }
+}
