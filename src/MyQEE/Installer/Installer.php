@@ -10,7 +10,8 @@ class Installer extends LibraryInstaller
     protected $locations = array
     (
         'myqee-core'    => 'core/',
-        'myqee-library' => 'libraries/{$name}/',
+        'myqee-library' => 'libraries/{$vendor}/{$name}/',
+        'myqee-project' => 'projects/{$name}/',
     );
 
     /**
@@ -25,7 +26,19 @@ class Installer extends LibraryInstaller
             throw new \InvalidArgumentException(sprintf('Package type "%s" is not supported', $packageType));
         }
 
-        return str_replace('{$name}', strtolower($package->getName()), $this->locations[$packageType]);
+        list($vendor, $name) = explode('/', strtolower($package->getName()), 2);
+
+        if (substr($name, 0, 8)=='project-')
+        {
+            $name = substr($name, 8);
+        }
+        elseif ($packageType=='myqee-library' && preg_match('#[^a-z0-9]|^[^a-z]#', $name))
+        {
+            throw new \InvalidArgumentException(sprintf('Package name "%s" is not supported', $name));
+        }
+
+
+        return str_replace(array('{$vendor}', '{$name}'), array($vendor, $name), $this->locations[$packageType]);
     }
 
     /**
