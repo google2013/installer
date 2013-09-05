@@ -45,6 +45,28 @@ class Installer extends LibraryInstaller
     /**
      * {@inheritDoc}
      */
+    public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
+    {
+        if (!$repo->hasPackage($package)) {
+            throw new \InvalidArgumentException('Package is not installed: '.$package);
+        }
+
+        $this->removeCode($package);
+        $this->removeBinaries($package);
+        $repo->removePackage($package);
+
+        $downloadPath = $this->getInstallPath($package);
+        if (strpos($package->getName(), '/')) {
+            $packageVendorDir = dirname($downloadPath);
+            if (is_dir($packageVendorDir) && !glob($packageVendorDir.'/*')) {
+                @rmdir($packageVendorDir);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function supports($packageType)
     {
         return isset($this->locations[$packageType]);
