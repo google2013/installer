@@ -53,13 +53,20 @@ class Installer extends LibraryInstaller
      */
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        echo "uninstall.....................\n";
         parent::uninstall($repo, $package);
 
         $downloadPath = $this->getInstallPath($package);
-        var_dump($downloadPath);
-        if (is_dir($downloadPath) && !glob($downloadPath.'/*')) {
-            @rmdir($downloadPath);
+
+        while (true) {
+            if (is_dir($downloadPath)) {
+                if (!glob($downloadPath.'/*')) {
+                    @rmdir($downloadPath);
+                } else {
+                    break;
+                }
+            } else {
+                $downloadPath = dirname($downloadPath);
+            }
         }
     }
 
