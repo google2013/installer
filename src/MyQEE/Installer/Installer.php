@@ -2,8 +2,8 @@
 namespace MyQEE\Installer;
 
 use Composer\Package\PackageInterface;
+use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Installer\LibraryInstaller;
-use Composer\Installer\InstalledRepositoryInterface;
 
 class Installer extends LibraryInstaller
 {
