@@ -1,9 +1,9 @@
 <?php
 namespace MyQEE\Installer;
 
-
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
+use Composer\Installer\InstalledRepositoryInterface;
 
 class Installer extends LibraryInstaller
 {
