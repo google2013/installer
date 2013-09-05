@@ -53,9 +53,11 @@ class Installer extends LibraryInstaller
      */
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
+        echo "uninstall.....................\n";
         parent::uninstall($repo, $package);
 
         $downloadPath = $this->getInstallPath($package);
+        var_dump($downloadPath);
         if (is_dir($downloadPath) && !glob($downloadPath.'/*')) {
             @rmdir($downloadPath);
         }
@@ -67,16 +69,5 @@ class Installer extends LibraryInstaller
     public function supports($packageType)
     {
         return isset($this->locations[$packageType]);
-    }
-
-    /**
-     * For an installer to override to modify the vars per installer.
-     *
-     * @param  array $vars
-     * @return array
-     */
-    public function inflectPackageVars($vars)
-    {
-        return $vars;
     }
 }
