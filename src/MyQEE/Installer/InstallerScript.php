@@ -7,20 +7,19 @@ class InstallerScript
 {
     public static function clean(Event $event)
     {
+        // if vendor only have composer/, myqee/, autoload.php then remove vendor dir,use myqee autoload
         $dir = realpath('vendor/') .'/';
         foreach (glob($dir . '*') as $file)
         {
-            echo "$file\n";
             if ($file[0]=='.')continue;
             $file_name = basename($file);
-            var_dump($file_name);
             if (!in_array($file_name, array('composer', 'myqee', 'autoload.php')))
             {
                 return true;
             }
         }
 
-        $st = self::remove_dir();
+        $st = self::remove_dir($dir);
 
         echo "clean composer files " . ($st?'success':'fail') ."\n";
     }
