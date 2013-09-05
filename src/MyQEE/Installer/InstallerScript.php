@@ -10,8 +10,10 @@ class InstallerScript
         $dir = realpath('vendor/') .'/';
         foreach (glob($dir . '*') as $file)
         {
+            echo "$file\n";
             if ($file[0]=='.')continue;
             $file_name = basename($file);
+            var_dump($file_name);
             if (!in_array($file_name, array('composer', 'myqee', 'autoload.php')))
             {
                 return true;
