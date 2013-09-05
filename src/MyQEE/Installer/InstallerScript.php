@@ -9,20 +9,24 @@ class InstallerScript
     {
         // if vendor only have composer/, myqee/, autoload.php then remove vendor dir,use myqee autoload
         $dir = realpath('vendor/') .'/';
+        $f   = $dir.'autoload-for-myqee.php';
         foreach (glob($dir . '*') as $file)
         {
             if ($file[0]=='.')continue;
             $file_name = basename($file);
             if (!in_array($file_name, array('composer', 'myqee', 'autoload.php', 'autoload-for-myqee.php')))
             {
-                symlink('autoload.php', $dir.'autoload-for-myqee.php');
+                if (!is_link($f))
+                {
+                    @symlink('autoload.php', $f);
+                }
                 return true;
             }
         }
 
-        if (is_link($dir.'autoload-for-myqee.php'))
+        if (is_link($f))
         {
-            unlink($dir.'autoload-for-myqee.php');
+            unlink($f);
         }
     }
 }
