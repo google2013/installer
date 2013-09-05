@@ -12,9 +12,6 @@
       "homepage": "http://www.queyang.com/"
     }
   ],
-  "require": {
-    "php": ">=5.3.0"
-  },
   "extra": {
     "class": "MyQEE\\Installer\\Installer"
   },
