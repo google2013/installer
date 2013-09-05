@@ -42,26 +42,10 @@ class Installer extends LibraryInstaller
         return realpath('./') . '/' . str_replace(array('{$vendor}', '{$name}'), array($vendor, $name), $this->locations[$packageType]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
+    protected function removeCode(PackageInterface $package)
     {
-        if (!$repo->hasPackage($package)) {
-            throw new \InvalidArgumentException('Package is not installed: '.$package);
-        }
-
-        $this->removeCode($package);
-        $this->removeBinaries($package);
-        $repo->removePackage($package);
-
         $downloadPath = $this->getInstallPath($package);
-        if (strpos($package->getName(), '/')) {
-            $packageVendorDir = dirname($downloadPath);
-            if (is_dir($packageVendorDir) && !glob($packageVendorDir.'/*')) {
-                @rmdir($packageVendorDir);
-            }
-        }
+        $this->downloadManager->remove($package, $downloadPath);
     }
 
     /**
