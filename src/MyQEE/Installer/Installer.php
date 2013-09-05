@@ -51,6 +51,19 @@ class Installer extends LibraryInstaller
     /**
      * {@inheritDoc}
      */
+    public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
+    {
+        parent::uninstall($repo, $package);
+
+        $downloadPath = $this->getInstallPath($package);
+        if (is_dir($downloadPath) && !glob($downloadPath.'/*')) {
+            @rmdir($downloadPath);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function supports($packageType)
     {
         return isset($this->locations[$packageType]);
