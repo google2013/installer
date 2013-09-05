@@ -5,7 +5,7 @@ use Composer\Script\Event;
 
 class InstallerScript
 {
-    public static function clean(Event $event)
+    public static function postAutoloadDump(Event $event)
     {
         // if vendor only have composer/, myqee/, autoload.php then remove vendor dir,use myqee autoload
         $dir = realpath('vendor/') .'/';
@@ -13,43 +13,16 @@ class InstallerScript
         {
             if ($file[0]=='.')continue;
             $file_name = basename($file);
-            if (!in_array($file_name, array('composer', 'myqee', 'autoload.php')))
+            if (!in_array($file_name, array('composer', 'myqee', 'autoload.php', 'autoload-for-myqee.php')))
             {
+                symlink('autoload.php', $dir.'autoload-for-myqee.php');
                 return true;
             }
         }
 
-        $st = self::remove_dir($dir);
-
-        echo "clean composer files " . ($st?'success':'fail') ."\n";
-    }
-
-    private static function remove_dir($dir)
-    {
-        if (!is_dir($dir))
+        if (is_link($dir.'autoload-for-myqee.php'))
         {
-            return true;
+            unlink($dir.'autoload-for-myqee.php');
         }
-
-        $realpath = realpath($dir);
-
-        if (!$realpath)
-        {
-            return true;
-        }
-
-        $handle = opendir($dir);
-        while (($file = readdir($handle)) !== false)
-        {
-            if ($file != '.' && $file != '..')
-            {
-                $tmp_dir = $dir . '/' . $file;
-                is_dir($tmp_dir) ? self::remove_dir($tmp_dir) : @unlink($tmp_dir);
-            }
-        }
-
-        closedir($handle);
-
-        return @rmdir($dir);
     }
 }
