@@ -11,6 +11,7 @@ class Installer extends LibraryInstaller
     (
         'myqee-core'    => 'core',
         'myqee-library' => 'libraries/{$vendor}/{$name}',
+        'myqee-module'  => 'modules/{$name}',
         'myqee-project' => 'projects/{$name}',
     );
 
@@ -32,7 +33,7 @@ class Installer extends LibraryInstaller
         {
             $name = substr($name, 8);
         }
-        elseif ($packageType=='myqee-library' && preg_match('#[^a-z0-9]|^[^a-z]#', $name))
+        elseif (($packageType=='myqee-library' || $packageType=='myqee-module') && preg_match('#[^a-z0-9]|^[^a-z]#', $name))
         {
             throw new \InvalidArgumentException(sprintf('Package name "%s" is not supported', $name));
         }
