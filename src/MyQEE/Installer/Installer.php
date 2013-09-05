@@ -60,7 +60,9 @@ class Installer extends LibraryInstaller
         while (true) {
             if (is_dir($downloadPath)) {
                 if (!glob($downloadPath.'/*')) {
-                    @rmdir($downloadPath);
+                    if (false===@rmdir($downloadPath)) {
+                        break;
+                    }
                 } else {
                     break;
                 }
