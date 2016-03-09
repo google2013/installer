@@ -9,8 +9,8 @@ class Installer extends LibraryInstaller
 {
     protected $locations = array
     (
-        'database' => '{$vendor}/database/src/Driver/{$extra.dir}',
-        'cache'    => '{$vendor}/cache/src/Driver/{$extra.dir}'
+        'database' => '{$vendor}/database/src/{$extra.dir}',
+        'cache'    => '{$vendor}/cache/src/{$extra.dir}'
     );
 
     /**
