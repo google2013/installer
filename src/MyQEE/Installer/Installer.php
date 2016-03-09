@@ -1,18 +1,16 @@
 <?php
 namespace MyQEE\Installer;
 
-
 use Composer\Package\PackageInterface;
+use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Installer\LibraryInstaller;
 
 class Installer extends LibraryInstaller
 {
     protected $locations = array
     (
-        'myqee-core'    => 'core',
-        'myqee-library' => 'libraries/{$vendor}/{$name}',
-        'myqee-module'  => 'modules/{$name}',
-        'myqee-project' => 'projects/{$name}',
+        'database' => '{$vendor}/database/src/Driver/{$extra.dir}',
+        'cache'    => '{$vendor}/cache/src/Driver/{$extra.dir}'
     );
 
     /**
@@ -28,18 +26,50 @@ class Installer extends LibraryInstaller
         }
 
         list($vendor, $name) = explode('/', strtolower($package->getName()), 2);
+        $extra = $package->getExtra();
 
-        if (substr($name, 0, 8)=='project-')
+        $path = str_replace(['{$vendor}', '{$name}', '{$extra.dir}'], [$vendor, $name, $extra['dir']], $this->locations[$packageType]);
+
+
+        return $this->vendorDir .'/'. $path;
+    }
+
+    protected function removeCode(PackageInterface $package)
+    {
+        $downloadPath = $this->getInstallPath($package);
+        $this->downloadManager->remove($package, $downloadPath);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
+    {
+        parent::uninstall($repo, $package);
+
+        $downloadPath = $this->getInstallPath($package);
+
+        while (true) 
         {
-            $name = substr($name, 8);
+            if (is_dir($downloadPath)) 
+            {
+                if (!glob($downloadPath.'/*')) 
+                {
+                    if (false === @rmdir($downloadPath))
+                    {
+                        break;
+                    }
+                } 
+                else 
+                {
+                    break;
+                }
+            } 
+            else 
+            {
+                $downloadPath = dirname($downloadPath);
+            }
         }
-        elseif (($packageType=='myqee-library' || $packageType=='myqee-module') && preg_match('#[^a-z0-9]|^[^a-z]#', $name))
-        {
-            throw new \InvalidArgumentException(sprintf('Package name "%s" is not supported', $name));
-        }
-
-
-        return realpath('./') . '/' . str_replace(array('{$vendor}', '{$name}'), array($vendor, $name), $this->locations[$packageType]);
     }
 
     /**
@@ -48,16 +78,5 @@ class Installer extends LibraryInstaller
     public function supports($packageType)
     {
         return isset($this->locations[$packageType]);
-    }
-
-    /**
-     * For an installer to override to modify the vars per installer.
-     *
-     * @param  array $vars
-     * @return array
-     */
-    public function inflectPackageVars($vars)
-    {
-        return $vars;
     }
 }
