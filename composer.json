@@ -12,10 +12,7 @@
       "homepage": "http://www.queyang.com/"
     }
   ],
-  "extra": {
-    "class": "MyQEE\\Installer\\Installer"
-  },
   "autoload": {
-    "psr-0": {"MyQEE\\Installer": "src/"}
+    "psr-4": {"MyQEE\\Installer": "src/"}
   }
 }
