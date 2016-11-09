@@ -10,7 +10,9 @@ class Installer extends LibraryInstaller
     protected $locations = array
     (
         'database' => '{$vendor}/database/src/{$extra.dir}',
-        'cache'    => '{$vendor}/cache/src/{$extra.dir}'
+        'cache'    => '{$vendor}/cache/src/{$extra.dir}',
+        'storage'  => '{$vendor}/storage/src/{$extra.dir}',
+        'session'  => '{$vendor}/storage/src/{$extra.dir}',
     );
 
     /**
